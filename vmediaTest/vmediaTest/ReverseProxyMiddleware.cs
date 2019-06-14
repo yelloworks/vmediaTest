@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
@@ -81,10 +77,8 @@ namespace vmediaTest
                 requestMessage.Content = streamContent;
             }
 
-
             foreach (var header in context.Request.Headers)
             {
-                //Mb here we need to parse
                 requestMessage.Content?.Headers.TryAddWithoutValidation(header.Key, header.Value.ToArray());
             }
 
@@ -98,13 +92,11 @@ namespace vmediaTest
             }
             foreach (var header in responseMessage.Content.Headers)
             {
-                //Mb here we need to parse
                 context.Response.Headers[header.Key] = header.Value.ToArray();
             }
 
             context.Response.Headers.Remove("transfer-encoding");
         }
-
 
         private Uri BuildTargetUri(HttpRequest request)
         {
@@ -116,10 +108,8 @@ namespace vmediaTest
             var memStream = new MemoryStream();
             await response.Content.CopyToAsync(memStream);
             memStream.Position = 0;
-            string responseBody = new StreamReader(memStream).ReadToEnd();
 
-            return GetChangedBody(responseBody); ;
-
+            return GetChangedBody(new StreamReader(memStream).ReadToEnd()); ;
         }
 
         private MemoryStream GetChangedBody(string content)
