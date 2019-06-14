@@ -6,7 +6,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using HtmlAgilityPack;
 using Microsoft.AspNetCore.Http;
 
 namespace vmediaTest
@@ -15,6 +17,8 @@ namespace vmediaTest
     {
         private static readonly HttpClient _httpClient = new HttpClient();
         private readonly RequestDelegate _nextMiddleware;
+        private const string _siteAdress = "https://habr.com";
+        private string _host; 
 
         public ReverseProxyMiddleware(RequestDelegate nextMiddleware)
         {
@@ -23,6 +27,8 @@ namespace vmediaTest
 
         public async Task Invoke(HttpContext context)
         {
+            _host = "https://" + context.Request.Host.Value;
+
             var targetUri = BuildTargetUri(context.Request);
             if (targetUri != null)
             {
@@ -31,13 +37,9 @@ namespace vmediaTest
                     HttpCompletionOption.ResponseHeadersRead, context.RequestAborted))
                 {
                     context.Response.StatusCode = (int)responseMessage.StatusCode;
-                   
                     CopyFromTargetResponseHeaders(context, responseMessage);
                     var memStream = await GetBodyStream(responseMessage);
                     await memStream.CopyToAsync(context.Response.Body);
-                    ////await responseMessage.Content.CopyToAsync(context.Response.Body);
-
-
                 }
 
                 return;
@@ -106,14 +108,7 @@ namespace vmediaTest
 
         private Uri BuildTargetUri(HttpRequest request)
         {
-            Uri targetUri = null;
-            if (request.Path.StartsWithSegments("/", out var remainingPath))
-            {
-                //Plase for uri
-                targetUri = new Uri("https://habr.com" + remainingPath);
-            }
-
-            return targetUri;
+            return new Uri(_siteAdress + request.Path);
         }
 
         private async Task<MemoryStream> GetBodyStream(HttpResponseMessage response)
@@ -121,14 +116,36 @@ namespace vmediaTest
             var memStream = new MemoryStream();
             await response.Content.CopyToAsync(memStream);
             memStream.Position = 0;
-
-            //Body here
             string responseBody = new StreamReader(memStream).ReadToEnd();
 
-
-            memStream.Position = 0;
-            return memStream;
+            return GetChangedBody(responseBody); ;
 
         }
+
+        private MemoryStream GetChangedBody(string content)
+        {
+            var doc = new HtmlDocument();
+            doc.LoadHtml(content);
+
+            foreach (HtmlNode node in doc.DocumentNode.SelectNodes("//body//text()[not(self::script)]"))
+            {
+                node.InnerHtml = Regex.Replace(node.InnerHtml, @"\b(?<word>[\w]{6})\b", "${word}™️");
+            }
+
+            foreach (HtmlNode linkNode in doc.DocumentNode.SelectNodes("//a[@href]"))
+            {
+                var link = linkNode.GetAttributeValue("href", string.Empty);
+                if (link.StartsWith(_siteAdress))
+                {
+                    linkNode.SetAttributeValue("href", _host + link.Substring(_siteAdress.Length));
+                }
+            }
+
+            MemoryStream outStream = new MemoryStream();
+            doc.Save(outStream);
+            outStream.Position = 0;
+            return outStream;
+        }
+
     }
 }
