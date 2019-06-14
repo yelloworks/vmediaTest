@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 
@@ -28,6 +31,7 @@ namespace vmediaTest
                     HttpCompletionOption.ResponseHeadersRead, context.RequestAborted))
                 {
                     context.Response.StatusCode = (int)responseMessage.StatusCode;
+                    GetBody(responseMessage);
                     CopyFromTargetResponseHeaders(context, responseMessage);
                     await responseMessage.Content.CopyToAsync(context.Response.Body);
                 }
@@ -71,6 +75,7 @@ namespace vmediaTest
                 requestMessage.Content = streamContent;
             }
 
+
             foreach (var header in context.Request.Headers)
             {
                 //Mb here we need to parse
@@ -105,6 +110,15 @@ namespace vmediaTest
             }
 
             return targetUri;
+        }
+
+        private async void GetBody(HttpResponseMessage response)
+        {
+            Stream st = await response.Content.ReadAsStreamAsync();
+
+            var a = new StreamReader(st).ReadToEnd();
+
+         
         }
     }
 }
