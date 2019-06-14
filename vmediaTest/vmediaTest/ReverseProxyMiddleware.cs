@@ -33,7 +33,7 @@ namespace vmediaTest
                     context.Response.StatusCode = (int)responseMessage.StatusCode;
                    
                     CopyFromTargetResponseHeaders(context, responseMessage);
-                    var memStream = await GetBody(responseMessage);
+                    var memStream = await GetBodyStream(responseMessage);
                     await memStream.CopyToAsync(context.Response.Body);
                     ////await responseMessage.Content.CopyToAsync(context.Response.Body);
 
@@ -116,7 +116,7 @@ namespace vmediaTest
             return targetUri;
         }
 
-        private async Task<MemoryStream> GetBody(HttpResponseMessage response)
+        private async Task<MemoryStream> GetBodyStream(HttpResponseMessage response)
         {
             var memStream = new MemoryStream();
             await response.Content.CopyToAsync(memStream);
