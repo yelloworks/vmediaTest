@@ -31,9 +31,13 @@ namespace vmediaTest
                     HttpCompletionOption.ResponseHeadersRead, context.RequestAborted))
                 {
                     context.Response.StatusCode = (int)responseMessage.StatusCode;
-                    GetBody(responseMessage);
+                   
                     CopyFromTargetResponseHeaders(context, responseMessage);
-                    await responseMessage.Content.CopyToAsync(context.Response.Body);
+                    var memStream = await GetBody(responseMessage);
+                    await memStream.CopyToAsync(context.Response.Body);
+                    ////await responseMessage.Content.CopyToAsync(context.Response.Body);
+
+
                 }
 
                 return;
@@ -112,13 +116,19 @@ namespace vmediaTest
             return targetUri;
         }
 
-        private async void GetBody(HttpResponseMessage response)
+        private async Task<MemoryStream> GetBody(HttpResponseMessage response)
         {
-            Stream st = await response.Content.ReadAsStreamAsync();
+            var memStream = new MemoryStream();
+            await response.Content.CopyToAsync(memStream);
+            memStream.Position = 0;
 
-            var a = new StreamReader(st).ReadToEnd();
+            //Body here
+            string responseBody = new StreamReader(memStream).ReadToEnd();
 
-         
+
+            memStream.Position = 0;
+            return memStream;
+
         }
     }
 }
