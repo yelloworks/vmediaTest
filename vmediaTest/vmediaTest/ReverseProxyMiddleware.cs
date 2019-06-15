@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
@@ -34,14 +35,46 @@ namespace vmediaTest
                 {
                     context.Response.StatusCode = (int)responseMessage.StatusCode;
                     CopyFromTargetResponseHeaders(context, responseMessage);
-                    var memStream = await GetBodyStream(responseMessage);
-                    await memStream.CopyToAsync(context.Response.Body);
+                    await ProcessResponseContent(context, responseMessage);
                 }
 
                 return;
             }
 
             await _nextMiddleware(context);
+        }
+
+        private async Task ProcessResponseContent(HttpContext context, HttpResponseMessage responseMessage)
+        {
+            var memStream = new MemoryStream();
+            await responseMessage.Content.CopyToAsync(memStream);
+
+            var doc = new HtmlDocument();
+            doc.Load(memStream);
+
+            var textNodes = doc.DocumentNode.SelectNodes("//body//text()[not(self::script)]");
+            if (textNodes != null)
+            {
+                foreach (HtmlNode node in doc.DocumentNode.SelectNodes("//body//text()[not(self::script)]"))
+                {
+                    node.InnerHtml = Regex.Replace(node.InnerHtml, @"\b(?<word>[\w]{6})\b", "${word}™️");
+                }
+            }
+
+            var linkNodes = doc.DocumentNode.SelectNodes("//a[@href]");
+            if (linkNodes != null)
+            {
+                foreach (HtmlNode linkNode in doc.DocumentNode.SelectNodes("//a[@href]"))
+                {
+                    var link = linkNode.GetAttributeValue("href", string.Empty);
+                    if (link.StartsWith(_siteAdress))
+                    {
+                        linkNode.SetAttributeValue("href", _host + link.Substring(_siteAdress.Length));
+                    }
+                }
+            }
+
+            await context.Response.WriteAsync(doc.DocumentNode.OuterHtml, Encoding.UTF8);
         }
 
         private HttpRequestMessage CreateTargetMessage(HttpContext context, Uri targetUri)
@@ -101,41 +134,6 @@ namespace vmediaTest
         private Uri BuildTargetUri(HttpRequest request)
         {
             return new Uri(_siteAdress + request.Path);
-        }
-
-        private async Task<MemoryStream> GetBodyStream(HttpResponseMessage response)
-        {
-            var memStream = new MemoryStream();
-            await response.Content.CopyToAsync(memStream);
-            memStream.Position = 0;
-
-            return GetChangedBody(new StreamReader(memStream).ReadToEnd()); ;
-        }
-
-        private MemoryStream GetChangedBody(string content)
-        {
-            var doc = new HtmlDocument();
-            doc.LoadHtml(content);
-
-            foreach (HtmlNode node in doc.DocumentNode.SelectNodes("//body//text()[not(self::script)]"))
-            {
-                node.InnerHtml = Regex.Replace(node.InnerHtml, @"\b(?<word>[\w]{6})\b", "${word}™️");
-            }
-
-            foreach (HtmlNode linkNode in doc.DocumentNode.SelectNodes("//a[@href]"))
-            {
-                var link = linkNode.GetAttributeValue("href", string.Empty);
-                if (link.StartsWith(_siteAdress))
-                {
-                    linkNode.SetAttributeValue("href", _host + link.Substring(_siteAdress.Length));
-                }
-            }
-
-            MemoryStream outStream = new MemoryStream();
-            doc.Save(outStream);
-            outStream.Position = 0;
-            return outStream;
-        }
-
+        }     
     }
 }

@@ -38,38 +38,43 @@ namespace vmediaTest
             else
             {
                 app.UseHttpsRedirection();
+                const string host = "https://habr.com";
 
-                const string habrAddress = "https://habr.com";
                 app.RunProxy(async context =>
                 {
-                    var response = await context.ForwardTo(habrAddress).AddXForwardedHeaders().Send();
+                    var response = await context.ForwardTo(host).AddXForwardedHeaders().Send();
                     if (response.Content.Headers.ContentType?.MediaType != "text/html")
                         return response;
 
                     using (var body = await response.Content.ReadAsStreamAsync())
                     {
-                        var htmlDoc = new HtmlDocument();
-                        htmlDoc.Load(body);
+                        var doc = new HtmlDocument();
+                        doc.Load(body);
 
-                        var textNodes = htmlDoc.DocumentNode.SelectNodes("//text()");
+                        var textNodes = doc.DocumentNode.SelectNodes("//text()");
                         if (textNodes != null)
+                        {
                             foreach (HtmlNode node in textNodes)
+                            {
                                 node.InnerHtml = Regex.Replace(node.InnerHtml, @"\b(?<word>[\w]{6})\b", "${word}™️");
+                            }
+                        }
+                            
 
-                        var linkNodes = htmlDoc.DocumentNode.SelectNodes("//a[@href]");
+                        var linkNodes = doc.DocumentNode.SelectNodes("//a[@href]");
                         if (linkNodes != null)
                             foreach (HtmlNode linkNode in linkNodes)
                             {
                                 var link = linkNode.GetAttributeValue("href", string.Empty);
-                                if (link.StartsWith(habrAddress))
+                                if (link.StartsWith(host))
                                 {
-                                    linkNode.SetAttributeValue("href", "https://" + context.Request.Host.Value + link.Substring(habrAddress.Length));
+                                    linkNode.SetAttributeValue("href", "https://" + context.Request.Host.Value + link.Substring(host.Length));
                                 }
                             }
 
                         using (var sw = new StringWriter())
                         {
-                            htmlDoc.Save(sw);
+                            doc.Save(sw);
                             response.Content = new StringContent(sw.ToString(),
                                 Encoding.UTF8,
                                 response.Content.Headers.ContentType.MediaType);
