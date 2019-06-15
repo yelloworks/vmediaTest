@@ -1,0 +1,14 @@
+C:\repo\vmedia\vmediaTest\vmediaTest\bin\Debug\netcoreapp2.2\vmediaTest.deps.json
+C:\repo\vmedia\vmediaTest\vmediaTest\bin\Debug\netcoreapp2.2\vmediaTest.runtimeconfig.json
+C:\repo\vmedia\vmediaTest\vmediaTest\bin\Debug\netcoreapp2.2\vmediaTest.runtimeconfig.dev.json
+C:\repo\vmedia\vmediaTest\vmediaTest\bin\Debug\netcoreapp2.2\vmediaTest.dll
+C:\repo\vmedia\vmediaTest\vmediaTest\bin\Debug\netcoreapp2.2\vmediaTest.pdb
+C:\repo\vmedia\vmediaTest\vmediaTest\obj\Debug\netcoreapp2.2\vmediaTest.csprojAssemblyReference.cache
+C:\repo\vmedia\vmediaTest\vmediaTest\obj\Debug\netcoreapp2.2\vmediaTest.csproj.CoreCompileInputs.cache
+C:\repo\vmedia\vmediaTest\vmediaTest\obj\Debug\netcoreapp2.2\vmediaTest.RazorAssemblyInfo.cache
+C:\repo\vmedia\vmediaTest\vmediaTest\obj\Debug\netcoreapp2.2\vmediaTest.RazorAssemblyInfo.cs
+C:\repo\vmedia\vmediaTest\vmediaTest\obj\Debug\netcoreapp2.2\vmediaTest.AssemblyInfoInputs.cache
+C:\repo\vmedia\vmediaTest\vmediaTest\obj\Debug\netcoreapp2.2\vmediaTest.AssemblyInfo.cs
+C:\repo\vmedia\vmediaTest\vmediaTest\obj\Debug\netcoreapp2.2\vmediaTest.RazorTargetAssemblyInfo.cache
+C:\repo\vmedia\vmediaTest\vmediaTest\obj\Debug\netcoreapp2.2\vmediaTest.dll
+C:\repo\vmedia\vmediaTest\vmediaTest\obj\Debug\netcoreapp2.2\vmediaTest.pdb
