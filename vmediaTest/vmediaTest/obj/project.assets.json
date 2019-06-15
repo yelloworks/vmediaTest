@@ -2761,6 +2761,21 @@
           "lib/netstandard1.3/Newtonsoft.Json.Bson.dll": {}
         }
       },
+      "ProxyKit/2.0.4": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Http": "2.2.0",
+          "Microsoft.AspNetCore.Http.Extensions": "2.2.0",
+          "Microsoft.AspNetCore.HttpOverrides": "2.2.0",
+          "Microsoft.Extensions.Http": "2.2.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/ProxyKit.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/ProxyKit.dll": {}
+        }
+      },
       "Remotion.Linq/2.2.0": {
         "type": "package",
         "dependencies": {
@@ -7466,6 +7481,20 @@
         "newtonsoft.json.bson.nuspec"
       ]
     },
+    "ProxyKit/2.0.4": {
+      "sha512": "lxQamzoI/yrBbWqkHRMnj8YlokhUw+lGyrpyS2BmS2xINOe5jV8tja24xk6d7GqdGKcVS/YEpzGoSlgEKAkkuw==",
+      "type": "package",
+      "path": "proxykit/2.0.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/ProxyKit.dll",
+        "lib/netstandard2.0/ProxyKit.pdb",
+        "lib/netstandard2.0/ProxyKit.xml",
+        "proxykit.2.0.4.nupkg.sha512",
+        "proxykit.nuspec"
+      ]
+    },
     "Remotion.Linq/2.2.0": {
       "sha512": "fK/76UmpC0FXBlGDFVPLJHQlDLYnGC+XY3eoDgCgbtrhi0vzbXDQ3n/IYHhqSKqXQfGw/u04A1drWs7rFVkRjw==",
       "type": "package",
@@ -12155,7 +12184,8 @@
       "HtmlAgilityPack >= 1.11.7",
       "Microsoft.AspNetCore.App >= 2.2.0",
       "Microsoft.AspNetCore.Razor.Design >= 2.2.0",
-      "Microsoft.NETCore.App >= 2.2.0"
+      "Microsoft.NETCore.App >= 2.2.0",
+      "ProxyKit >= 2.0.4"
     ]
   },
   "packageFolders": {
@@ -12219,6 +12249,10 @@
             "target": "Package",
             "version": "[2.2.0, )",
             "autoReferenced": true
+          },
+          "ProxyKit": {
+            "target": "Package",
+            "version": "[2.0.4, )"
           }
         },
         "imports": [

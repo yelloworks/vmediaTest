@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.2",
-    "signature": "db6faa3510a8c5da2dd1f8ac341625a804fdb417"
+    "signature": "1f7aea99271940f7abfb3e002f72787ec3ab2ff4"
   },
   "compilationOptions": {
     "defines": [
@@ -27,7 +27,8 @@
           "HtmlAgilityPack": "1.11.7",
           "Microsoft.AspNetCore.App": "2.2.0",
           "Microsoft.AspNetCore.Razor.Design": "2.2.0",
-          "Microsoft.NETCore.App": "2.2.0"
+          "Microsoft.NETCore.App": "2.2.0",
+          "ProxyKit": "2.0.4"
         },
         "runtime": {
           "vmediaTest.dll": {}
@@ -51,6 +52,23 @@
         },
         "compile": {
           "lib/netstandard2.0/HtmlAgilityPack.dll": {}
+        }
+      },
+      "ProxyKit/2.0.4": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Http": "2.2.0",
+          "Microsoft.AspNetCore.Http.Extensions": "2.2.0",
+          "Microsoft.AspNetCore.HttpOverrides": "2.2.0",
+          "Microsoft.Extensions.Http": "2.2.0"
+        },
+        "runtime": {
+          "lib/netstandard2.0/ProxyKit.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.0.4.0"
+          }
+        },
+        "compile": {
+          "lib/netstandard2.0/ProxyKit.dll": {}
         }
       },
       "System.Net.Http/4.3.2": {
@@ -3292,6 +3310,13 @@
       "sha512": "sha512-C9ASJVueGHkVl74lTeD9k/sUE8wayKPZDdzytNSu0bXke4tEoTHgZw+Oe8BDlQLdR2DyIUwGTgbGrH4u2b/uxg==",
       "path": "htmlagilitypack/1.11.7",
       "hashPath": "htmlagilitypack.1.11.7.nupkg.sha512"
+    },
+    "ProxyKit/2.0.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-lxQamzoI/yrBbWqkHRMnj8YlokhUw+lGyrpyS2BmS2xINOe5jV8tja24xk6d7GqdGKcVS/YEpzGoSlgEKAkkuw==",
+      "path": "proxykit/2.0.4",
+      "hashPath": "proxykit.2.0.4.nupkg.sha512"
     },
     "System.Net.Http/4.3.2": {
       "type": "package",
