@@ -5325,7 +5325,7 @@
       ]
     },
     "Microsoft.AspNetCore.Razor.Design/2.1.2": {
-      "sha512": "fe1+dpy+eM4IX1zodsvkihO1Spuj0NecfStWzvkYoMo7/ziOsqSv4vFK36ZpBfHa4gpdCEwaU46EPzdq+ZDYhQ==",
+      "sha512": "ab4+TZw3Sxqrr5TwrwVyABeQkhSxYMJXgG6yZw7T+r6Vz+hcOt+pK79o15ESG7kZvWAK9wRG7emnTIia5O6R1Q==",
       "type": "package",
       "path": "microsoft.aspnetcore.razor.design/2.1.2",
       "hasTools": true,
@@ -11888,11 +11888,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\GitRepos\\vmediaTest\\vmediaTest\\vmediaTest\\vmediaTest.csproj",
+      "projectUniqueName": "C:\\repo\\vmedia\\vmediaTest\\vmediaTest\\vmediaTest.csproj",
       "projectName": "vmediaTest",
-      "projectPath": "C:\\GitRepos\\vmediaTest\\vmediaTest\\vmediaTest\\vmediaTest.csproj",
+      "projectPath": "C:\\repo\\vmedia\\vmediaTest\\vmediaTest\\vmediaTest.csproj",
       "packagesPath": "C:\\Users\\guard\\.nuget\\packages\\",
-      "outputPath": "C:\\GitRepos\\vmediaTest\\vmediaTest\\vmediaTest\\obj\\",
+      "outputPath": "C:\\repo\\vmedia\\vmediaTest\\vmediaTest\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -11906,9 +11906,7 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {},
-        "https://go.microsoft.com/fwlink/?LinkID=206669": {},
-        "https://www.nuget.org/api/v2/": {}
+        "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp2.1": {
