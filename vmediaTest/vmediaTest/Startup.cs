@@ -12,7 +12,7 @@ namespace vmediaTest
 {
     public class Startup
     {
-        private bool noNugetProxy = false;
+        private bool noNugetProxy = true;
 
         public void ConfigureServices(IServiceCollection services)
         {

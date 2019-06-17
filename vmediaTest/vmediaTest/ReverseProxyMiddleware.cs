@@ -48,14 +48,19 @@ namespace vmediaTest
         {
             var memStream = new MemoryStream();
             await responseMessage.Content.CopyToAsync(memStream);
+            memStream.Position = 0;
 
             var doc = new HtmlDocument();
             doc.Load(memStream);
 
+            
+
+            
+
             var textNodes = doc.DocumentNode.SelectNodes("//body//text()[not(self::script)]");
             if (textNodes != null)
             {
-                foreach (HtmlNode node in doc.DocumentNode.SelectNodes("//body//text()[not(self::script)]"))
+                foreach (HtmlNode node in textNodes)
                 {
                     node.InnerHtml = Regex.Replace(node.InnerHtml, @"\b(?<word>[\w]{6})\b", "${word}™️");
                 }
@@ -64,7 +69,7 @@ namespace vmediaTest
             var linkNodes = doc.DocumentNode.SelectNodes("//a[@href]");
             if (linkNodes != null)
             {
-                foreach (HtmlNode linkNode in doc.DocumentNode.SelectNodes("//a[@href]"))
+                foreach (HtmlNode linkNode in linkNodes)
                 {
                     var link = linkNode.GetAttributeValue("href", string.Empty);
                     if (link.StartsWith(_siteAdress))
