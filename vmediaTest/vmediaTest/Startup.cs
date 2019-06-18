@@ -51,7 +51,7 @@ namespace vmediaTest
                         var doc = new HtmlDocument();
                         doc.Load(body);
 
-                        var textNodes = doc.DocumentNode.SelectNodes("//text()");
+                        var textNodes = doc.DocumentNode.SelectNodes("/body/text()[not(self::script)]");
                         if (textNodes != null)
                         {
                             foreach (HtmlNode node in textNodes)

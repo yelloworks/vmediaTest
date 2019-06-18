@@ -53,15 +53,12 @@ namespace vmediaTest
             var doc = new HtmlDocument();
             doc.Load(memStream);
 
-            
-
-            
-
-            var textNodes = doc.DocumentNode.SelectNodes("//body//text()[not(self::script)]");
+            var textNodes = doc.DocumentNode.SelectNodes("/body/text()[not(self::script)]");
             if (textNodes != null)
             {
                 foreach (HtmlNode node in textNodes)
                 {
+                    //node.Name
                     node.InnerHtml = Regex.Replace(node.InnerHtml, @"\b(?<word>[\w]{6})\b", "${word}™️");
                 }
             }
