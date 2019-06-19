@@ -12195,11 +12195,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\repo\\vmedia\\vmediaTest\\vmediaTest\\vmediaTest.csproj",
+      "projectUniqueName": "C:\\GitRepos\\vmediaTest\\vmediaTest\\vmediaTest\\vmediaTest.csproj",
       "projectName": "vmediaTest",
-      "projectPath": "C:\\repo\\vmedia\\vmediaTest\\vmediaTest\\vmediaTest.csproj",
+      "projectPath": "C:\\GitRepos\\vmediaTest\\vmediaTest\\vmediaTest\\vmediaTest.csproj",
       "packagesPath": "C:\\Users\\guard\\.nuget\\packages\\",
-      "outputPath": "C:\\repo\\vmedia\\vmediaTest\\vmediaTest\\obj\\",
+      "outputPath": "C:\\GitRepos\\vmediaTest\\vmediaTest\\vmediaTest\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -12213,7 +12213,9 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://go.microsoft.com/fwlink/?LinkID=206669": {},
+        "https://www.nuget.org/api/v2/": {}
       },
       "frameworks": {
         "netcoreapp2.2": {

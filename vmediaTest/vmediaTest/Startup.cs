@@ -12,7 +12,7 @@ namespace vmediaTest
 {
     public class Startup
     {
-        private bool noNugetProxy = true;
+
 
         public void ConfigureServices(IServiceCollection services)
         {
@@ -30,61 +30,67 @@ namespace vmediaTest
             }
 
 
+            app.UseHttpsRedirection();
+            const string host = "https://habr.com";
 
-            if (noNugetProxy)
+            app.RunProxy(async context =>
             {
-                app.UseMiddleware<ReverseProxyMiddleware>();
-            }
-            else
-            {
-                app.UseHttpsRedirection();
-                const string host = "https://habr.com";
+                var response = await context.ForwardTo(host).AddXForwardedHeaders().Send();
+                if (response.Content.Headers.ContentType?.MediaType != "text/html")
+                    return response;
 
-                app.RunProxy(async context =>
+                using (var body = await response.Content.ReadAsStreamAsync())
                 {
-                    var response = await context.ForwardTo(host).AddXForwardedHeaders().Send();
-                    if (response.Content.Headers.ContentType?.MediaType != "text/html")
-                        return response;
+                    var doc = new HtmlDocument();
+                    doc.Load(body);
 
-                    using (var body = await response.Content.ReadAsStreamAsync())
+                    string nodeNames = "";
+
+
+
+
+                    var textNodes = doc.DocumentNode.SelectNodes("//body[not(self::script)]//text()");
+                    if (textNodes != null)
                     {
-                        var doc = new HtmlDocument();
-                        doc.Load(body);
-
-                        var textNodes = doc.DocumentNode.SelectNodes("/body/text()[not(self::script)]");
-                        if (textNodes != null)
+                        
+                        foreach (HtmlNode node in textNodes)
                         {
-                            foreach (HtmlNode node in textNodes)
+                            
+                            if (node.ParentNode.Name != "script")
                             {
                                 node.InnerHtml = Regex.Replace(node.InnerHtml, @"\b(?<word>[\w]{6})\b", "${word}™️");
                             }
-                        }
                             
-
-                        var linkNodes = doc.DocumentNode.SelectNodes("//a[@href]");
-                        if (linkNodes != null)
-                            foreach (HtmlNode linkNode in linkNodes)
-                            {
-                                var link = linkNode.GetAttributeValue("href", string.Empty);
-                                if (link.StartsWith(host))
-                                {
-                                    linkNode.SetAttributeValue("href", "https://" + context.Request.Host.Value + link.Substring(host.Length));
-                                }
-                            }
-
-                        using (var sw = new StringWriter())
-                        {
-                            doc.Save(sw);
-                            response.Content = new StringContent(sw.ToString(),
-                                Encoding.UTF8,
-                                response.Content.Headers.ContentType.MediaType);
-
-
-                            return response;
                         }
+
                     }
-                });
-            }
+
+                    var linkNodes = doc.DocumentNode.SelectNodes("//a[@href]");
+                    if (linkNodes != null)
+                        foreach (HtmlNode linkNode in linkNodes)
+                        {
+                            var link = linkNode.GetAttributeValue("href", string.Empty);
+                            if (link.StartsWith(host))
+                            {
+                                linkNode.SetAttributeValue("href",
+                                    "https://" + context.Request.Host.Value + link.Substring(host.Length));
+                            }
+                        }
+
+                   // var item = doc.DocumentNode.OuterHtml;
+                    using (var sw = new StringWriter())
+                    {
+                        doc.Save(sw);
+                        response.Content = new StringContent(sw.ToString(),
+                            Encoding.UTF8,
+                            response.Content.Headers.ContentType.MediaType);
+
+
+                        return response;
+                    }
+                }
+            });
+            
 
 
         }
