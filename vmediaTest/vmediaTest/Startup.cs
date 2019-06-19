@@ -44,11 +44,6 @@ namespace vmediaTest
                     var doc = new HtmlDocument();
                     doc.Load(body);
 
-                    string nodeNames = "";
-
-
-
-
                     var textNodes = doc.DocumentNode.SelectNodes("//body[not(self::script)]//text()");
                     if (textNodes != null)
                     {
@@ -65,7 +60,7 @@ namespace vmediaTest
 
                     }
 
-                    var linkNodes = doc.DocumentNode.SelectNodes("//a[@href]");
+                    var linkNodes = doc.DocumentNode.SelectNodes("//body//a[@href]");
                     if (linkNodes != null)
                         foreach (HtmlNode linkNode in linkNodes)
                         {
@@ -77,7 +72,6 @@ namespace vmediaTest
                             }
                         }
 
-                   // var item = doc.DocumentNode.OuterHtml;
                     using (var sw = new StringWriter())
                     {
                         doc.Save(sw);
